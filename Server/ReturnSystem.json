@@ -1,0 +1,11 @@
+{
+    "GetValueNumber": {
+        "GET": {
+            "ValueLen": "200"
+        },
+        "POST": [
+            "ValueType"
+        ],
+        "PHP_function": "ValueLen"
+    }
+}
