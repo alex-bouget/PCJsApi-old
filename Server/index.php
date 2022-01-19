@@ -6,10 +6,12 @@
  * GET cursor to function
  */
 $RCJS = "ReturnSystem.json";
-$function_included = "Function_File.php";
+$function_included = array("Function_File.php");
 
 error_reporting(E_ERROR);
-include $function_included;
+foreach ($function_included as $value) {
+	include $value;
+}
 if (isset($_GET["MM1_jc"])) { // Launch function
     if ($_GET["MM1_jc"] == "200") {
         echo file_get_contents($RCJS);
