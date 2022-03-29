@@ -7,7 +7,7 @@ setup(
     url="https://github.com/MisterMine01/PCJsApi",
     author="MisterMine01",
     py_modules=['pcjs_api'],
-    package_dir={"": "Client/python"},
+    package_dir={"": "Client/"},
     install_requires=[
         "requests"
     ],
