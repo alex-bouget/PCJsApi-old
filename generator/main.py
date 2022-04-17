@@ -28,7 +28,7 @@ def generate_js(js: PCJsApi) -> str:
         if len(value["POST"]) != 0:
             for i in value["POST"]:
                 val.append(" " * 16 + "\"" + i + "\": " + i + ",")
-            val[-1] = val[-1][0:-2]
+            val[-1] = val[-1][0:-1]
         val.append(" " * 12 + "}")
         val.append(" " * 8 + ");")
         val.append(" " * 4 + "}")
