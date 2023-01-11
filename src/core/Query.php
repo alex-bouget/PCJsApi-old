@@ -13,8 +13,11 @@ class Query {
         $this->post = $post;
     }
 
-    public function get(string $key): string
+    public function get(string $key): ?string
     {
+        if (!isset($this->get[$key])) {
+            return null;
+        }
         return $this->get[$key];
     }
 

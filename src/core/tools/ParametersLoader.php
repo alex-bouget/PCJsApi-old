@@ -21,8 +21,9 @@ function read_need_parameters(array $params): array
 }
 
 
-function load_parameters(array $params, PCJsApi $pc, Query $q): array
+function load_parameters(array $params, PCJsApi $pc, Query $q): array|false
 {
+    $args = array();
     foreach ($params as $parameter) {
         $data = "";
         switch ($parameter->getType()) {
@@ -32,14 +33,42 @@ function load_parameters(array $params, PCJsApi $pc, Query $q): array
             case "pcjs\core\PCJsApi":
                 $data = $pc;
                 break;
+
+            case "?int":
+                if ($q->get($parameter->getName()) === null) {
+                    $data = null;
+                    break;
+                }
             case "int":
+                if ($q->get($parameter->getName()) === null) {
+                    return false;
+                }
                 $data = intval($q->get($parameter->getName()));
                 break;
+            case "?float":
+                if ($q->get($parameter->getName()) === null) {
+                    $data = null;
+                    break;
+                }
             case "float":
+                if ($q->get($parameter->getName()) === null) {
+                    return false;
+                }
                 $data = floatval($q->get($parameter->getName()));
                 break;
+            case "?string":
+                if ($q->get($parameter->getName()) === null) {
+                    $data = null;
+                    break;
+                }
+            case "string":
+                if ($q->get($parameter->getName()) === null) {
+                    return false;
+                }
+                $data = $q->get($parameter->getName());
+                break;
             default:
-                $data = $q->post($parameter->getName());
+                return false;
                 break;
         }
         $args[] = $data;
