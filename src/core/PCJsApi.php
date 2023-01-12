@@ -43,19 +43,20 @@ class PCJsApi
      */
     public function load_entry(Query $q): Response
     {
+        $error = $this->from_config("error_entries");
         $entry = $q->get("entry");
         if ($entry === null) {
-            $entry = "PcJsApi.not_entry";
+            $entry =  $error["no_entry"];
         }
         $method = $this->entry_loader->get_entry($entry);
         if ($method === false) {
-            $method = $this->entry_loader->get_entry("PcJsApi.not_found");
+            $method = $this->entry_loader->get_entry($error["not_found"]);
         }
         if ($method === null) {
-            $method = $this->entry_loader->get_entry("PcJsApi.unknown_error");
+            $method = $this->entry_loader->get_entry($error["unknown_error"]);
         }
         if ($method->get_method()->isPublic() === false) {
-            $method = $this->entry_loader->get_entry("PcJsApi.not_public");
+            $method = $this->entry_loader->get_entry($error["not_public"]);
         }
         $method = $method->get_method();
 
@@ -64,10 +65,10 @@ class PCJsApi
         $args = $this->parameters_loader->load_parameters($method->getParameters(), $q);
 
         if ($args === false) {
-            $method = $this->entry_loader->get_entry("PcJsApi.not_parameters")->get_method();
+            $method = $this->entry_loader->get_entry($error["no_parameters"])->get_method();
             $args = $this->parameters_loader->load_parameters($method->getParameters(), $q);
         }
-        
+
         $response = $method->invokeArgs(new $method->class($this), $args);
 
         $this->parameters_loader->delete($q::class);
@@ -78,5 +79,14 @@ class PCJsApi
     public function get_parameters_loader(): ParametersLoader
     {
         return $this->parameters_loader;
+    }
+
+    public function from_config(string $entry): mixed
+    {
+        global $config_json;
+        if (isset($config_json[$entry])) {
+            return $config_json[$entry];
+        }
+        return null;
     }
 }

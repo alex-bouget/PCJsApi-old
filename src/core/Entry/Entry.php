@@ -27,8 +27,12 @@ class Entry implements LoadedEntityInterface
         $this->parameters = get_all_parameters($method);
         if (!isset($this->parameters['Entry'])) {
             $this->name = "__not_entry__";
+            $this->parameters['Entry'] = "__not_entry__";
+        } elseif (str_ends_with($this->parameters['Entry'], "__")) {
+            $this->name = $this->parameters['Entry'];
+        } else {
+            $this->name = $class_name . '.' . $this->parameters['Entry'];
         }
-        $this->name = $class_name . '.' . $this->parameters['Entry'];
     }
 
     /**

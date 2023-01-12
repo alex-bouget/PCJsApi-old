@@ -50,53 +50,59 @@ class RootComponents
         ));
     }
 
+
+    // Error entries
+
+    private $check = "Please check the entries [PcJsApi.get_entries]";
+    private $contact = "Please contact the administrator";
+
     /**
-     * @Entry not_found
+     * @Entry __not_found
      */
     public function not_found()
     {
         return new Response(json_encode(array(
-            "error" => "The entry isn't existed. Please check the components [PcJsApi.get_components]"
+            "error" => "The entry isn't existed. ". $this->check
         )));
     }
 
     /**
-     * @Entry not_entry
+     * @Entry __not_entry
      */
     public function not_entry()
     {
         return new Response(json_encode(array(
-            "error" => "The entry is not send. Please check the components [PcJsApi.get_components]"
+            "error" => "The entry is not send. " . $this->check
         )));
     }
 
     /**
-     * @Entry not_public
+     * @Entry __not_public
      */
     public function not_public()
     {
         return new Response(json_encode(array(
-            "error" => "The entry is not public. Contact the administrator"
+            "error" => "The entry is not public. " . $this->contact
         )));
     }
 
     /**
-     * @Entry not_parameters
+     * @Entry __not_parameters
      */
     public function not_parameters()
     {
         return new Response(json_encode(array(
-            "error" => "You don't send all parameters or a parameter is not good. Please check the components [PcJsApi.get_components]"
+            "error" => "You don't send all parameters or a parameter is not good. " . $this->check
         )));
     }
 
     /**
-     * @Entry unknown_error
+     * @Entry __unknown_error
      */
     public function unknown_error()
     {
         return new Response(json_encode(array(
-            "error" => "An unknown error occurred. Please contact the administrator"
+            "error" => "An unknown error occurred. " . $this->contact
         )));
     }
 }
