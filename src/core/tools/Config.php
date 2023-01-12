@@ -25,6 +25,9 @@ function get_component(string $path): array
     $pointer_class = get_pointer($rc);
     foreach ($rc->getMethods() as $method) {
         $pointer_method = get_pointer($method);
+        if ($pointer_method == "") {
+            continue;
+        }
         $components[$pointer_class . "." . $pointer_method] = $method;
     }
     return $components;

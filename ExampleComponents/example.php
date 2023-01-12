@@ -15,7 +15,7 @@ class Exemple
     {
         return new Response(json_encode(array(
             "Exemple 1",
-            $nb
+            $nb + 1,
         )));
     }
 }

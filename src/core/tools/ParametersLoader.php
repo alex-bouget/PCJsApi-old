@@ -35,37 +35,37 @@ function load_parameters(array $params, PCJsApi $pc, Query $q): array|false
                 break;
 
             case "?int":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     $data = null;
                     break;
                 }
             case "int":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     return false;
                 }
-                $data = intval($q->get($parameter->getName()));
+                $data = intval($q->post($parameter->getName()));
                 break;
             case "?float":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     $data = null;
                     break;
                 }
             case "float":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     return false;
                 }
-                $data = floatval($q->get($parameter->getName()));
+                $data = floatval($q->post($parameter->getName()));
                 break;
             case "?string":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     $data = null;
                     break;
                 }
             case "string":
-                if ($q->get($parameter->getName()) === null) {
+                if ($q->post($parameter->getName()) === null) {
                     return false;
                 }
-                $data = $q->get($parameter->getName());
+                $data = $q->post($parameter->getName());
                 break;
             default:
                 return false;
