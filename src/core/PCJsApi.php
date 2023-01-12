@@ -1,50 +1,82 @@
 <?php
 
-namespace pcjs\core;
+namespace PCJs\Core;
 
-use pcjs\core\tools\Config;
-
-use function pcjs\core\tools\load_config;
-use function pcjs\core\tools\load_parameters;
+use PCJs\Core\Entry\EntryLoader;
+use PCJs\Core\Parameters\ParametersLoader;
+use PCJs\Core\Parameters\ParametersLoaderInterface;
+use PCJs\Core\Parameters\ParametersType;
 
 class PCJsApi
 {
-    private Config $config;
 
-    public function __construct($config_file)
+    /**
+     * @var EntryLoader $entry_loader
+     */
+    private EntryLoader $entry_loader;
+
+    /**
+     * @var ParametersLoader $parameters_loader
+     */
+    private ParametersLoaderInterface $parameters_loader;
+
+
+    /**
+     * Constructor
+     * 
+     * @param string $config_file Path of the config file
+     */
+    public function __construct()
     {
-        $this->config = load_config($config_file);
+        $this->parameters_loader = new ParametersLoader();
+        $this->entry_loader = new EntryLoader();
+        $this->parameters_loader->register($this->parameters_loader::class, array(ParametersType::AUTOMATIZED), $this->parameters_loader);
+        $this->parameters_loader->register($this->entry_loader::class, array(ParametersType::AUTOMATIZED), $this->entry_loader);
     }
 
+    /**
+     * Load the entry
+     * 
+     * @param Query $q Query
+     * 
+     * @return Response
+     */
     public function load_entry(Query $q): Response
     {
         $entry = $q->get("entry");
         if ($entry === null) {
             $entry = "PcJsApi.not_entry";
         }
-        if (in_array($entry, array_keys($this->config->components)) === false) {
-            $method = $this->config->components["PcJsApi.not_found"];
-        } else {
-            $method = $this->config->components[$entry];
+        $method = $this->entry_loader->get_entry($entry);
+        if ($method === false) {
+            $method = $this->entry_loader->get_entry("PcJsApi.not_found");
         }
-
         if ($method === null) {
-            $method = $this->config->components["PcJsApi.unknown_error"];
+            $method = $this->entry_loader->get_entry("PcJsApi.unknown_error");
         }
-        if ($method->isPublic() === false) {
-            $method = $this->config->components["PcJsApi.not_public"];
+        if ($method->get_method()->isPublic() === false) {
+            $method = $this->entry_loader->get_entry("PcJsApi.not_public");
         }
-        $args = load_parameters($method->getParameters(), $this, $q);
+        $method = $method->get_method();
+
+        $this->parameters_loader->register($q::class, array(ParametersType::AUTOMATIZED), $q);
+
+        $args = $this->parameters_loader->load_parameters($method->getParameters(), $q);
+
         if ($args === false) {
-            $method = $this->config->components["PcJsApi.not_parameters"];
-            $args = load_parameters($method->getParameters(), $this, $q);
+            $method = $this->entry_loader->get_entry("PcJsApi.not_parameters")->get_method();
+            $args = $this->parameters_loader->load_parameters($method->getParameters(), $q);
         }
+        
         $response = $method->invokeArgs(new $method->class($this), $args);
+
+        $this->parameters_loader->delete($q::class);
+
         return $response;
     }
 
-    public function get_config(): Config
+    public function get_parameters_loader(): ParametersLoader
     {
-        return $this->config;
+        return $this->parameters_loader;
     }
 }

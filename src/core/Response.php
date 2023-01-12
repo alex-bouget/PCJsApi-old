@@ -1,6 +1,6 @@
 <?php
 
-namespace pcjs\core;
+namespace PCJs\Core;
 
 class Response
 {

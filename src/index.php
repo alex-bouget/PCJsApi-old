@@ -4,7 +4,7 @@ include_once __DIR__ . "/core/loader.php";
 
 use pcjs\core\PCJsApi;
 
-$api = new PCJsApi(__DIR__ . "/config.json");
+$api = new PCJsApi();
 $q = new pcjs\core\Query($_GET, $_POST);
 $r = $api->load_entry($q);
 
