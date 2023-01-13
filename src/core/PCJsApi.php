@@ -32,6 +32,12 @@ class PCJsApi
         $this->entry_loader = new EntryLoader();
         $this->parameters_loader->register($this->parameters_loader::class, array(ParametersType::AUTOMATIZED), $this->parameters_loader);
         $this->parameters_loader->register($this->entry_loader::class, array(ParametersType::AUTOMATIZED), $this->entry_loader);
+        foreach ($this->entry_loader->get_components() as $component) {
+            if (in_array("PCJs\Core\ComponentType\RegistryComponentInterface", $component->get_class()->getInterfaceNames())) {
+                $method = $component->get_class()->getMethod("register");
+                $method->invoke($this->parameters_loader);
+            }
+        }
     }
 
     /**

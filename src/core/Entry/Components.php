@@ -34,7 +34,9 @@ class Components implements LoadedEntityInterface
         $this->name = $this->parameters['Entry'];
         foreach ($class->getMethods() as $method) {
             $entry = new Entry($this->name, $method);
-            if (strpos($entry->get_name(), ".") === false) {
+            if ($entry->get_name() === "__") {
+                continue;
+            } elseif (strpos($entry->get_name(), ".") === false) {
                 $this->entries[$entry->get_name()] = $entry;
             } else {
                 $this->entries[explode(".", $entry->get_name())[1]] = $entry;

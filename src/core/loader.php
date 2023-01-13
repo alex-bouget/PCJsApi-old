@@ -5,6 +5,9 @@ include_once __DIR__ . "/parameters/ParametersLoader.php";
 include_once __DIR__ . "/parameters/ParametersRegistry.php";
 include_once __DIR__ . "/parameters/ParametersType.php";
 
+include_once __DIR__ . "/Entry/ComponentType/EntryComponentInterface.php";
+include_once __DIR__ . "/Entry/ComponentType/RegistryComponentInterface.php";
+
 include_once __DIR__ . "/Entry/LoadedEntityInterface.php";
 include_once __DIR__ . "/Entry/EntryLoader.php";
 include_once __DIR__ . "/Entry/Components.php";

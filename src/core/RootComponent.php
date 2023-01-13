@@ -2,6 +2,7 @@
 
 namespace PCJs\Components;
 
+use PCJs\Core\ComponentType\EntryComponentInterface;
 use PCJs\Core\Entry\EntryLoader;
 use PCJs\Core\Parameters\ParametersLoader;
 use PCJs\Core\Response;
@@ -9,7 +10,7 @@ use PCJs\Core\Response;
 /**
  * @Entry PcJsApi
  */
-class RootComponents
+class RootComponents implements EntryComponentInterface
 {
 
     /**
