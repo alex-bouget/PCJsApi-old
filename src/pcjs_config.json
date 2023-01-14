@@ -1,0 +1,12 @@
+{
+    "pcjs_version": "0.1",
+    "components_dir": "../ExampleComponents",
+    "error_entries": {
+        "no_entry": "PcJsApi.__not_entry",
+        "not_found": "PcJsApi.__not_found",
+        "unknown_error": "PcJsApi.__unknown_error",
+        "not_public": "PcJsApi.__not_public",
+        "no_parameters": "PcJsApi.__not_parameters"
+
+    }
+}
