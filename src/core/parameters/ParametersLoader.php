@@ -77,7 +77,7 @@ class ParametersLoader implements ParametersLoaderInterface
                     $args[] = $registry->get_value();
                 } else {
                     if ($q === null) {
-                        $args[] = $registry->get_name();
+                        $args[] = array('name' => $parameter->getName(), 'type'=> $registry->get_name());
                         continue;
                     }
                     if ($q->post($parameter->getName()) === null) {

@@ -12,6 +12,9 @@ namespace PCJs\Core\Entry;
 function get_all_parameters(object $object): array
 {
     $get_pointer = $object->getDocComment();
+    if ($get_pointer === false) {
+        return array();
+    }
     $last_arobase_pos = 0;
     $parameters = array();
     while (($last_arobase_pos = strpos($get_pointer, '@', $last_arobase_pos + 1)) !== false) {
